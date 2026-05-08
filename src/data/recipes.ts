@@ -189,4 +189,3 @@ export const recipes: Recipe[] = [
     FunFact: "Literally 'burnt cheese' — invented in 1950s Nayagarh by sweet shop owner Sudarshan Sahoo who left leftover chhena in a hot oven by accident.",
   },
 ];
-];
