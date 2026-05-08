@@ -8,7 +8,7 @@ const Input = z.object({
 export type CookingGuide = {
   meal: string;
   funFact: string;
-  steps: { title: string; detail: string }[];
+  steps: CookingStep[];
   videos: { title: string; channel: string; videoId: string }[];
 };
 
