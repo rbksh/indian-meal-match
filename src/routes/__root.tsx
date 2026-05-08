@@ -72,14 +72,18 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
+      { title: "Rasoi Saathi" },
+      { name: "description", content: "Dedicated to all indian moms across the globe!" },
       { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
+      { property: "og:title", content: "Rasoi Saathi" },
+      { property: "og:description", content: "Dedicated to all indian moms across the globe!" },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
       { name: "twitter:site", content: "@Lovable" },
+      { name: "twitter:title", content: "Rasoi Saathi" },
+      { name: "twitter:description", content: "Dedicated to all indian moms across the globe!" },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/29ce6f1f-bd7d-4492-a032-1bf93a137464/id-preview-ce00d748--29f606ca-1dd1-46e4-94dd-031c4d745a65.lovable.app-1778222386824.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/29ce6f1f-bd7d-4492-a032-1bf93a137464/id-preview-ce00d748--29f606ca-1dd1-46e4-94dd-031c4d745a65.lovable.app-1778222386824.png" },
     ],
     links: [
       {
