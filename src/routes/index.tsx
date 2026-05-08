@@ -6,6 +6,7 @@ import { identifyIngredients } from "@/lib/identify.functions";
 import { Sparkles, ChefHat, Clock, Search, Camera, Loader2, X } from "lucide-react";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { CookingPanel } from "@/components/CookingPanel";
+import { PartyPlanner } from "@/components/PartyPlanner";
 
 export const Route = createFileRoute("/")({
   component: Index,
@@ -289,6 +290,7 @@ function Index() {
         </section>
 
         <CookingPanel />
+        <PartyPlanner />
         <footer className="mt-16 text-center text-xs text-muted-foreground">
           Built for hungry families · {recipes.length} Indian dinners ready to match
         </footer>
