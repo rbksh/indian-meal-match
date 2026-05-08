@@ -3,6 +3,8 @@ export type Recipe = {
   "Required Ingredients": string[];
   Instructions: string;
   "Prep Time": string;
+  Region?: string;
+  FunFact?: string;
 };
 
 export const recipes: Recipe[] = [
@@ -66,4 +68,125 @@ export const recipes: Recipe[] = [
     Instructions: "Whisk eggs with chopped onion, tomato, chili, coriander, turmeric and salt. Cook in oil until set, fold and serve hot.",
     "Prep Time": "10 min",
   },
+  {
+    "Recipe Name": "Litti Chokha",
+    "Required Ingredients": ["atta", "sattu", "pyaz", "lehsun", "adrak", "hari mirch", "ajwain", "sarson tel", "baingan", "aloo", "tamatar", "namak", "ghee"],
+    Instructions: "Stuff atta dough balls with spiced sattu mix. Roast on coals or in oven until golden. Mash roasted baingan, aloo and tamatar with mustard oil, garlic and onion for chokha. Dunk hot litti in ghee and serve with chokha.",
+    "Prep Time": "75 min",
+    Region: "Bihar / Jharkhand",
+    FunFact: "Litti was a traveler's food eaten by Magadh soldiers — it stays edible for days without going stale.",
+  },
+  {
+    "Recipe Name": "Dal Baati Churma",
+    "Required Ingredients": ["atta", "sooji", "ghee", "dahi", "panchmel dal", "haldi", "lal mirch", "garam masala", "gud", "elaichi", "namak"],
+    Instructions: "Knead stiff atta-sooji-ghee dough, shape baatis and bake until cracked. Cook panchmel dal with spices. Crush extra baatis with ghee and gud for churma. Dunk baatis in ghee and serve with dal and churma.",
+    "Prep Time": "90 min",
+    Region: "Rajasthan",
+    FunFact: "Born in Mewar war camps — soldiers buried dough balls in hot sand at dawn and dug them up baked by evening.",
+  },
+  {
+    "Recipe Name": "Pakhala Bhata",
+    "Required Ingredients": ["chawal", "dahi", "paani", "kadi patta", "rai", "hari mirch", "adrak", "namak", "nimbu"],
+    Instructions: "Cook rice and cool. Soak overnight in water with a spoon of yogurt to ferment. Temper with mustard, curry leaves, ginger, chili. Serve cold with fried fish or aloo bharta.",
+    "Prep Time": "20 min + overnight",
+    Region: "Odisha",
+    FunFact: "Odisha celebrates 20 March as Pakhala Dibasa — this fermented rice was offered to Lord Jagannath in Puri centuries ago.",
+  },
+  {
+    "Recipe Name": "Thukpa",
+    "Required Ingredients": ["noodles", "chicken", "pyaz", "lehsun", "adrak", "gajar", "patta gobi", "soy sauce", "kali mirch", "hari pyaz", "tel"],
+    Instructions: "Sauté ginger, garlic, onion in oil. Add chicken and brown. Add veggies and stock, simmer. Drop in noodles and cook till soft. Finish with soy sauce, pepper and spring onion.",
+    "Prep Time": "30 min",
+    Region: "Arunachal Pradesh / Sikkim",
+    FunFact: "Thukpa came over the Himalayas from Tibet with monks — it warms you up at high altitude where lighter food just doesn't cut it.",
+  },
+  {
+    "Recipe Name": "Bisi Bele Bath",
+    "Required Ingredients": ["chawal", "toor dal", "imli", "sambar masala", "gajar", "matar", "beans", "pyaz", "kadi patta", "ghee", "kaju", "haldi", "namak"],
+    Instructions: "Cook rice and dal together till mushy. Cook veggies with tamarind pulp and bisi bele bath masala. Mix everything, simmer and finish with ghee-fried cashews and curry leaves.",
+    "Prep Time": "45 min",
+    Region: "Karnataka",
+    FunFact: "Bisi Bele Bath literally means 'hot lentil rice' in Kannada — its recipe was perfected in the royal kitchens of the Mysore Palace.",
+  },
+  {
+    "Recipe Name": "Undhiyu",
+    "Required Ingredients": ["surti papdi", "baingan", "aloo", "shakarkand", "kacha kela", "methi", "besan", "hara lehsun", "adrak", "hari mirch", "dhaniya", "tel", "ajwain"],
+    Instructions: "Make methi muthia from besan and methi, fry. Mix all veggies with green masala paste. Layer in pot with muthia, drizzle oil, slow cook upside down till tender.",
+    "Prep Time": "75 min",
+    Region: "Gujarat",
+    FunFact: "Undhiyu means 'upside down' — traditionally cooked in clay pots buried mouth-down in hot earth at winter Uttarayan kite festival.",
+  },
+  {
+    "Recipe Name": "Misal Pav",
+    "Required Ingredients": ["matki", "pyaz", "tamatar", "adrak", "lehsun", "kanda lasun masala", "haldi", "tel", "farsan", "nimbu", "dhaniya", "pav"],
+    Instructions: "Sprout matki and pressure cook. Make spicy kanda-lasun gravy. Pour gravy over sprouts in a bowl, top with farsan, onion, coriander and lemon. Serve with buttered pav.",
+    "Prep Time": "40 min",
+    Region: "Maharashtra",
+    FunFact: "Misal started as a peasant breakfast in Kolhapur and Nashik — the spicier the 'tarri' on top, the more bragging rights for the cook.",
+  },
+  {
+    "Recipe Name": "Macher Jhol",
+    "Required Ingredients": ["rohu fish", "aloo", "tamatar", "adrak", "haldi", "jeera", "kalonji", "hari mirch", "sarson tel", "dhaniya", "namak"],
+    Instructions: "Marinate fish in turmeric and salt, shallow fry. Temper kalonji and chili in mustard oil, add ginger-tomato paste. Add potatoes and water, simmer. Slip in fish and cook 5 min.",
+    "Prep Time": "35 min",
+    Region: "West Bengal",
+    FunFact: "A light, soupy fish curry — Bengalis call fish 'jol-er-phool' (flower of the water) and it's a daily must on the thala.",
+  },
+  {
+    "Recipe Name": "Pongal",
+    "Required Ingredients": ["chawal", "moong dal", "ghee", "kali mirch", "jeera", "adrak", "kadi patta", "kaju", "hing", "namak"],
+    Instructions: "Roast moong dal lightly, pressure cook with rice till mushy. Temper ghee with cumin, pepper, ginger, curry leaves, cashews and hing. Mix into the rice and serve hot with sambar.",
+    "Prep Time": "30 min",
+    Region: "Tamil Nadu",
+    FunFact: "Cooked fresh in clay pots during the Pongal harvest festival — when the milk boils over, families shout 'Pongalo Pongal!' for prosperity.",
+  },
+  {
+    "Recipe Name": "Kashmiri Rogan Josh",
+    "Required Ingredients": ["mutton", "dahi", "sarson tel", "kashmiri lal mirch", "saunf powder", "sonth", "hing", "elaichi", "laung", "dalchini", "tej patta", "namak"],
+    Instructions: "Heat mustard oil with whole spices. Add mutton and brown. Mix kashmiri chili and fennel powder in yogurt, pour in. Add dry ginger and hing, slow cook covered till oil floats and meat is tender.",
+    "Prep Time": "90 min",
+    Region: "Jammu & Kashmir",
+    FunFact: "Brought to Kashmir by the Mughals from Persia — its deep red color comes from ratan jot and Kashmiri chilies, never tomato.",
+  },
+  {
+    "Recipe Name": "Dhansak",
+    "Required Ingredients": ["mutton", "toor dal", "chana dal", "masoor dal", "kaddu", "baingan", "methi", "pyaz", "tamatar", "dhansak masala", "imli", "tel", "lehsun", "adrak"],
+    Instructions: "Cook mutton with mixed dals and veggies till soft. Blend dal smooth. Bhuno onion-tomato-ginger-garlic with dhansak masala, add mutton and dal, finish with tamarind. Serve with caramelized brown rice.",
+    "Prep Time": "100 min",
+    Region: "Parsi (Gujarat / Maharashtra)",
+    FunFact: "Parsis traditionally never cook dhansak on Sundays alone — it's the meal eaten on the 4th day after a death in the family, never on happy occasions.",
+  },
+  {
+    "Recipe Name": "Appam with Stew",
+    "Required Ingredients": ["chawal", "naariyal", "yeast", "chini", "chicken", "aloo", "gajar", "naariyal doodh", "adrak", "hari mirch", "kadi patta", "kali mirch", "elaichi", "laung"],
+    Instructions: "Ferment rice-coconut batter overnight with yeast. Cook chicken-veg stew in coconut milk with whole spices and ginger. Pour batter in appam pan, swirl, cover and cook till lacy edges and soft center. Serve with stew.",
+    "Prep Time": "45 min + overnight",
+    Region: "Kerala",
+    FunFact: "Appam-stew is the classic Syrian Christian Easter breakfast in Kerala — the lacy appam represents fishing nets cast by St. Thomas's first converts.",
+  },
+  {
+    "Recipe Name": "Pootharekulu",
+    "Required Ingredients": ["chawal starch", "ghee", "pisi chini", "elaichi", "kaju", "badam"],
+    Instructions: "Spread thin rice-starch batter on a hot inverted pot to make paper-thin sheets. Brush with ghee, sprinkle powdered sugar, cardamom and chopped nuts. Fold like a paan and serve.",
+    "Prep Time": "40 min",
+    Region: "Andhra Pradesh",
+    FunFact: "Made in only one village — Atreyapuram — these 'paper sweets' are so thin you can read newsprint through them, and got a GI tag in 2023.",
+  },
+  {
+    "Recipe Name": "Jadoh",
+    "Required Ingredients": ["chawal", "pork", "pyaz", "adrak", "haldi", "tej patta", "kali mirch", "hari mirch", "namak", "tel"],
+    Instructions: "Cook pork with onion, ginger, turmeric and pepper till tender. Add washed rice and stock to the pot, season, cover and cook on low till rice absorbs all the meaty juice.",
+    "Prep Time": "50 min",
+    Region: "Meghalaya (Khasi)",
+    FunFact: "Jadoh is the Khasi 'mother of all rice dishes' — served at every Meghalayan wedding and funeral, traditionally cooked in pig's blood for the deepest red color.",
+  },
+  {
+    "Recipe Name": "Chhena Poda",
+    "Required Ingredients": ["chhena", "chini", "sooji", "ghee", "elaichi", "kaju", "kishmish"],
+    Instructions: "Crumble fresh chhena, mix with sugar, sooji, cardamom, ghee, cashew and raisins. Line a tin with sal leaves or parchment, pour mix, bake till the top is dark caramel brown.",
+    "Prep Time": "60 min",
+    Region: "Odisha",
+    FunFact: "Literally 'burnt cheese' — invented in 1950s Nayagarh by sweet shop owner Sudarshan Sahoo who left leftover chhena in a hot oven by accident.",
+  },
+];
 ];
