@@ -4,6 +4,8 @@ import { useServerFn } from "@tanstack/react-start";
 import { recipes, type Recipe } from "@/data/recipes";
 import { identifyIngredients } from "@/lib/identify.functions";
 import { Sparkles, ChefHat, Clock, Search, Camera, Loader2, X } from "lucide-react";
+import { ThemeToggle } from "@/components/ThemeToggle";
+import { CookingPanel } from "@/components/CookingPanel";
 
 export const Route = createFileRoute("/")({
   component: Index,
@@ -101,6 +103,9 @@ function Index() {
   return (
     <main className="min-h-screen px-4 py-12 md:py-20">
       <div className="mx-auto max-w-3xl">
+        <div className="mb-6 flex justify-end">
+          <ThemeToggle />
+        </div>
         <header className="text-center animate-fade-in-up">
           <div className="inline-flex items-center gap-2 rounded-full border border-border bg-card/60 px-4 py-1.5 text-xs font-medium text-muted-foreground backdrop-blur">
             <Sparkles className="h-3.5 w-3.5 text-primary" />
@@ -266,6 +271,7 @@ function Index() {
         <footer className="mt-16 text-center text-xs text-muted-foreground">
           Built for hungry families · {recipes.length} Indian dinners ready to match
         </footer>
+        <CookingPanel />
       </div>
     </main>
   );
