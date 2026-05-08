@@ -223,6 +223,12 @@ function Index() {
                         </span>
                         <span>·</span>
                         <span>{m.matched.length}/{m.recipe["Required Ingredients"].length} ingredients</span>
+                        {m.recipe.Region && (
+                          <>
+                            <span>·</span>
+                            <span className="font-medium text-primary">{m.recipe.Region}</span>
+                          </>
+                        )}
                       </div>
                     </div>
                     <div
@@ -262,6 +268,12 @@ function Index() {
                   <p className="mt-5 text-[15px] leading-relaxed text-foreground/80">
                     {m.recipe.Instructions}
                   </p>
+                  {m.recipe.FunFact && (
+                    <div className="mt-4 rounded-2xl border border-border bg-secondary/40 p-4 text-sm">
+                      <span className="font-semibold text-primary">Did you know? </span>
+                      <span className="text-foreground/80">{m.recipe.FunFact}</span>
+                    </div>
+                  )}
                 </article>
               );
             })}

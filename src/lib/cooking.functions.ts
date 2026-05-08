@@ -7,9 +7,12 @@ const Input = z.object({
 
 export type CookingGuide = {
   meal: string;
-  steps: { title: string; detail: string }[];
+  funFact: string;
+  steps: CookingStep[];
   videos: { title: string; channel: string; videoId: string }[];
 };
+
+export type CookingStep = { title: string; detail: string; timerSeconds?: number };
 
 export const getCookingGuide = createServerFn({ method: "POST" })
   .inputValidator((input) => Input.parse(input))
@@ -29,7 +32,7 @@ export const getCookingGuide = createServerFn({ method: "POST" })
           {
             role: "system",
             content:
-              "You help home cooks make Indian dishes. Always respond using the provided tool. Use very simple, friendly language a beginner can follow. Give 6 to 10 short cooking steps. Suggest 3 real, popular YouTube cooking videos from well-known Indian food YouTubers (e.g. Hebbar's Kitchen, Ranveer Brar, Sanjeev Kapoor Khazana, Kabita's Kitchen, Nisha Madhulika, Cook with Parul, Your Food Lab, Tasted Recipes). Provide accurate 11-character YouTube video IDs you are confident exist for that exact dish.",
+              "You help home cooks make Indian dishes (including lesser-known regional/state recipes). Always respond using the provided tool. Use very simple, friendly language a beginner can follow. Give 6 to 10 short cooking steps. For any step that requires waiting/cooking/frying/boiling/simmering/resting for a specific amount of time, set timerSeconds to that duration in seconds (use the lower bound if a range). Omit timerSeconds for steps that don't need a timer. Also include a 1-2 sentence funFact about the dish — its origin, the state/region it comes from, history, or a culturally interesting tidbit. Suggest 3 real, popular YouTube cooking videos from well-known Indian food YouTubers (e.g. Hebbar's Kitchen, Ranveer Brar, Sanjeev Kapoor Khazana, Kabita's Kitchen, Nisha Madhulika, Cook with Parul, Your Food Lab, Tasted Recipes). Provide accurate 11-character YouTube video IDs you are confident exist for that exact dish.",
           },
           { role: "user", content: `Dish to cook: ${data.meal}` },
         ],
@@ -42,6 +45,10 @@ export const getCookingGuide = createServerFn({ method: "POST" })
               parameters: {
                 type: "object",
                 properties: {
+                  funFact: {
+                    type: "string",
+                    description: "1-2 sentences about the dish's origin, history, or cultural significance.",
+                  },
                   steps: {
                     type: "array",
                     minItems: 4,
@@ -51,6 +58,10 @@ export const getCookingGuide = createServerFn({ method: "POST" })
                       properties: {
                         title: { type: "string", description: "Short step title (max 6 words)" },
                         detail: { type: "string", description: "1-2 simple sentences explaining what to do." },
+                        timerSeconds: {
+                          type: "number",
+                          description: "Duration in seconds if this step involves waiting/cooking for a specific time. Omit otherwise.",
+                        },
                       },
                       required: ["title", "detail"],
                       additionalProperties: false,
@@ -72,7 +83,7 @@ export const getCookingGuide = createServerFn({ method: "POST" })
                     },
                   },
                 },
-                required: ["steps", "videos"],
+                required: ["funFact", "steps", "videos"],
                 additionalProperties: false,
               },
             },
