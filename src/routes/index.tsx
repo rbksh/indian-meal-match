@@ -1,7 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useMemo, useState } from "react";
+import { useRef, useState } from "react";
+import { useServerFn } from "@tanstack/react-start";
 import { recipes, type Recipe } from "@/data/recipes";
-import { Sparkles, ChefHat, Clock, Search } from "lucide-react";
+import { identifyIngredients } from "@/lib/identify.functions";
+import { Sparkles, ChefHat, Clock, Search, Camera, Loader2, X } from "lucide-react";
 
 export const Route = createFileRoute("/")({
   component: Index,
@@ -37,6 +39,37 @@ function ingredientMatches(ingredient: string, tokens: string[]): boolean {
 function Index() {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<Match[] | null>(null);
+  const [scanning, setScanning] = useState(false);
+  const [preview, setPreview] = useState<string | null>(null);
+  const [scanError, setScanError] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const identify = useServerFn(identifyIngredients);
+
+  const handlePhoto = async (file: File) => {
+    setScanError(null);
+    setScanning(true);
+    const dataUrl = await new Promise<string>((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result as string);
+      reader.onerror = () => reject(reader.error);
+      reader.readAsDataURL(file);
+    });
+    setPreview(dataUrl);
+    try {
+      const base64 = dataUrl.split(",")[1] ?? "";
+      const result = await identify({ data: { imageBase64: base64, mimeType: file.type || "image/jpeg" } });
+      const detected = (result.ingredients || "").trim();
+      if (!detected) {
+        setScanError("Couldn't detect ingredients. Try a clearer photo.");
+      } else {
+        setQuery((prev) => (prev ? `${prev}, ${detected}` : detected));
+      }
+    } catch (e: any) {
+      setScanError(e?.message || "Failed to analyze image.");
+    } finally {
+      setScanning(false);
+    }
+  };
 
   const find = () => {
     const tokens = tokenize(query);
@@ -83,6 +116,31 @@ function Index() {
 
         <section className="mt-10 animate-fade-in-up" style={{ animationDelay: "120ms" }}>
           <div className="rounded-3xl bg-card p-2 shadow-[var(--shadow-elegant)] ring-1 ring-border">
+            {(preview || scanning || scanError) && (
+              <div className="flex items-center gap-3 rounded-2xl bg-secondary/60 p-3 m-1">
+                {preview && (
+                  <img src={preview} alt="Scanned ingredients" className="h-16 w-16 rounded-xl object-cover ring-1 ring-border" />
+                )}
+                <div className="flex-1 text-sm">
+                  {scanning && (
+                    <span className="inline-flex items-center gap-2 text-muted-foreground">
+                      <Loader2 className="h-4 w-4 animate-spin" /> Identifying ingredients…
+                    </span>
+                  )}
+                  {!scanning && scanError && <span className="text-destructive">{scanError}</span>}
+                  {!scanning && !scanError && preview && (
+                    <span className="text-muted-foreground">Detected ingredients added below ✨</span>
+                  )}
+                </div>
+                <button
+                  onClick={() => { setPreview(null); setScanError(null); }}
+                  className="rounded-lg p-1.5 text-muted-foreground hover:bg-background"
+                  aria-label="Clear scan"
+                >
+                  <X className="h-4 w-4" />
+                </button>
+              </div>
+            )}
             <textarea
               value={query}
               onChange={(e) => setQuery(e.target.value)}
@@ -90,10 +148,27 @@ function Index() {
               className="block w-full resize-none rounded-2xl bg-transparent p-6 text-lg md:text-xl leading-relaxed text-foreground placeholder:text-muted-foreground/70 focus:outline-none"
               rows={5}
             />
-            <div className="flex items-center justify-between gap-3 px-3 pb-3">
-              <span className="text-xs text-muted-foreground pl-3">
-                Separate with commas or new lines
-              </span>
+            <div className="flex flex-wrap items-center justify-between gap-3 px-3 pb-3">
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept="image/*"
+                capture="environment"
+                className="hidden"
+                onChange={(e) => {
+                  const f = e.target.files?.[0];
+                  if (f) handlePhoto(f);
+                  e.target.value = "";
+                }}
+              />
+              <button
+                onClick={() => fileInputRef.current?.click()}
+                disabled={scanning}
+                className="inline-flex items-center gap-2 rounded-2xl border border-border bg-background/60 px-4 py-3 text-sm font-semibold text-foreground transition-colors hover:bg-accent disabled:opacity-60"
+              >
+                {scanning ? <Loader2 className="h-4 w-4 animate-spin" /> : <Camera className="h-4 w-4" />}
+                Snap ingredients
+              </button>
               <button
                 onClick={find}
                 className="group inline-flex items-center gap-2 rounded-2xl px-6 py-3.5 text-base font-semibold text-primary-foreground transition-transform hover:scale-[1.02] active:scale-[0.98]"
@@ -104,6 +179,9 @@ function Index() {
               </button>
             </div>
           </div>
+          <p className="mt-3 text-center text-xs text-muted-foreground">
+            Type, or snap a photo of your ingredients — AI will fill them in.
+          </p>
         </section>
 
         <section className="mt-12">
