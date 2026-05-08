@@ -268,10 +268,10 @@ function Index() {
           </div>
         </section>
 
+        <CookingPanel />
         <footer className="mt-16 text-center text-xs text-muted-foreground">
           Built for hungry families · {recipes.length} Indian dinners ready to match
         </footer>
-        <CookingPanel />
       </div>
     </main>
   );
