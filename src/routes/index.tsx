@@ -149,7 +149,7 @@ function Index() {
             <textarea
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              placeholder="e.g. potato, tomato, onion, ginger, cumin, paneer, rice…"
+              placeholder="e.g. aloo, tamatar, pyaz, adrak, jeera, paneer, dhaniya, methi, hing…"
               className="block w-full resize-none rounded-2xl bg-transparent p-6 text-lg md:text-xl leading-relaxed text-foreground placeholder:text-muted-foreground/70 focus:outline-none"
               rows={5}
             />
