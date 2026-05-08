@@ -11,7 +11,7 @@ export const Route = createFileRoute("/")({
   component: Index,
   head: () => ({
     meta: [
-      { title: "Spice Match — Indian Recipe Finder" },
+      { title: "Rasoi Saathi — Your Indian Kitchen Companion" },
       { name: "description", content: "Type the ingredients you have at home and instantly find Indian family dinner recipes you can cook tonight." },
     ],
   }),
@@ -103,7 +103,15 @@ function Index() {
   return (
     <main className="min-h-screen px-4 py-12 md:py-20">
       <div className="mx-auto max-w-3xl">
-        <div className="mb-6 flex justify-end">
+        <div className="mb-6 flex items-center justify-between gap-4">
+          <div>
+            <div className="text-2xl md:text-3xl font-bold tracking-tight">
+              <span className="gradient-text">Rasoi Saathi</span>
+            </div>
+            <p className="text-xs text-muted-foreground mt-0.5">
+              Built with love by Shesh Shiromani
+            </p>
+          </div>
           <ThemeToggle />
         </div>
         <header className="text-center animate-fade-in-up">
