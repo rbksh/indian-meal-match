@@ -1,7 +1,76 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
 import { getCookingGuide, type CookingGuide } from "@/lib/cooking.functions";
-import { Play, ListChecks, Loader2, ChefHat, Check, ArrowRight, ArrowLeft, Youtube } from "lucide-react";
+import { Play, ListChecks, Loader2, ChefHat, Check, ArrowRight, ArrowLeft, Youtube, Timer, Pause, RotateCcw, Sparkles } from "lucide-react";
+
+function StepTimer({ seconds }: { seconds: number }) {
+  const [remaining, setRemaining] = useState(seconds);
+  const [running, setRunning] = useState(false);
+  const [done, setDone] = useState(false);
+  const ref = useRef<number | null>(null);
+
+  useEffect(() => { setRemaining(seconds); setRunning(false); setDone(false); }, [seconds]);
+
+  useEffect(() => {
+    if (!running) return;
+    ref.current = window.setInterval(() => {
+      setRemaining((r) => {
+        if (r <= 1) {
+          if (ref.current) window.clearInterval(ref.current);
+          setRunning(false);
+          setDone(true);
+          try {
+            const ctx = new (window.AudioContext || (window as any).webkitAudioContext)();
+            const o = ctx.createOscillator();
+            const g = ctx.createGain();
+            o.connect(g); g.connect(ctx.destination);
+            o.frequency.value = 880; g.gain.value = 0.2;
+            o.start(); setTimeout(() => { o.stop(); ctx.close(); }, 600);
+          } catch {}
+          return 0;
+        }
+        return r - 1;
+      });
+    }, 1000);
+    return () => { if (ref.current) window.clearInterval(ref.current); };
+  }, [running]);
+
+  const mm = String(Math.floor(remaining / 60)).padStart(2, "0");
+  const ss = String(remaining % 60).padStart(2, "0");
+  const pct = ((seconds - remaining) / seconds) * 100;
+
+  return (
+    <div className="mt-5 rounded-2xl border border-border bg-secondary/40 p-4">
+      <div className="flex items-center justify-between gap-3">
+        <div className="inline-flex items-center gap-2 text-sm font-medium text-muted-foreground">
+          <Timer className="h-4 w-4 text-primary" /> Timer
+        </div>
+        <div className={`font-mono text-3xl font-bold tabular-nums ${done ? "text-success" : "text-foreground"}`} style={done ? { color: "var(--success)" } : undefined}>
+          {mm}:{ss}
+        </div>
+      </div>
+      <div className="mt-3 h-1.5 w-full overflow-hidden rounded-full bg-muted">
+        <div className="h-full rounded-full transition-all duration-500" style={{ width: `${pct}%`, background: done ? "var(--success)" : "var(--gradient-warm)" }} />
+      </div>
+      <div className="mt-3 flex gap-2">
+        <button
+          onClick={() => { if (done) { setRemaining(seconds); setDone(false); setRunning(true); } else setRunning((r) => !r); }}
+          className="inline-flex flex-1 items-center justify-center gap-2 rounded-xl px-4 py-2 text-sm font-semibold text-primary-foreground"
+          style={{ background: "var(--gradient-warm)" }}
+        >
+          {done ? (<><RotateCcw className="h-4 w-4" /> Restart</>) : running ? (<><Pause className="h-4 w-4" /> Pause</>) : (<><Play className="h-4 w-4" /> Start</>)}
+        </button>
+        <button
+          onClick={() => { setRunning(false); setRemaining(seconds); setDone(false); }}
+          className="inline-flex items-center gap-2 rounded-xl border border-border bg-background px-4 py-2 text-sm font-semibold"
+        >
+          <RotateCcw className="h-4 w-4" /> Reset
+        </button>
+      </div>
+      {done && <p className="mt-2 text-center text-sm font-semibold" style={{ color: "var(--success)" }}>Time's up! ✨</p>}
+    </div>
+  );
+}
 
 type Mode = "video" | "tracker";
 
@@ -75,6 +144,14 @@ export function CookingPanel() {
 
       {guide && (
         <div className="mt-6 animate-fade-in-up">
+          {guide.funFact && (
+            <div className="mb-4 rounded-2xl border border-border bg-card p-4 shadow-[var(--shadow-card)]">
+              <div className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-primary">
+                <Sparkles className="h-3.5 w-3.5" /> Did you know?
+              </div>
+              <p className="mt-2 text-[15px] leading-relaxed text-foreground/80">{guide.funFact}</p>
+            </div>
+          )}
           <div className="mb-4 flex justify-center">
             <div className="inline-flex rounded-full border border-border bg-card p-1 shadow-sm">
               <button
@@ -172,6 +249,9 @@ export function CookingPanel() {
                     <p className="mt-2 text-lg leading-relaxed text-foreground/80">
                       {guide.steps[stepIdx].detail}
                     </p>
+                    {typeof guide.steps[stepIdx].timerSeconds === "number" && guide.steps[stepIdx].timerSeconds! > 0 && (
+                      <StepTimer key={`${stepIdx}-${guide.steps[stepIdx].timerSeconds}`} seconds={guide.steps[stepIdx].timerSeconds!} />
+                    )}
                   </div>
                 </div>
 
