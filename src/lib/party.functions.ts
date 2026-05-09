@@ -69,8 +69,6 @@ Give scaled ingredient quantities for the EXACT guest count (${data.guests} peop
                   shoppingNotes: { type: "string", description: "Smart tips for buying / prepping ahead." },
                   timeline: {
                     type: "array",
-                    minItems: 3,
-                    maxItems: 8,
                     items: {
                       type: "object",
                       properties: {
@@ -78,27 +76,22 @@ Give scaled ingredient quantities for the EXACT guest count (${data.guests} peop
                         task: { type: "string" },
                       },
                       required: ["when", "task"],
-                      additionalProperties: false,
                     },
                   },
                   menu: {
                     type: "array",
-                    minItems: 5,
-                    maxItems: 10,
                     items: {
                       type: "object",
                       properties: {
                         name: { type: "string" },
                         category: {
                           type: "string",
-                          enum: ["starter", "snack", "main", "side", "bread-rice", "dessert", "drink"],
+                          description: "One of: starter, snack, main, side, bread-rice, dessert, drink",
                         },
                         servingNote: { type: "string", description: "How much to serve per person and total." },
                         quickTip: { type: "string", description: "Optional one-line cooking shortcut or tip." },
                         ingredients: {
                           type: "array",
-                          minItems: 3,
-                          maxItems: 16,
                           items: {
                             type: "object",
                             properties: {
@@ -106,17 +99,14 @@ Give scaled ingredient quantities for the EXACT guest count (${data.guests} peop
                               qty: { type: "string", description: "Scaled quantity with unit, e.g. '500 gm', '1.5 katori', '6 pyaz'" },
                             },
                             required: ["item", "qty"],
-                            additionalProperties: false,
                           },
                         },
                       },
                       required: ["name", "category", "servingNote", "ingredients"],
-                      additionalProperties: false,
                     },
                   },
                 },
                 required: ["occasion", "summary", "shoppingNotes", "timeline", "menu"],
-                additionalProperties: false,
               },
             },
           },
@@ -136,6 +126,23 @@ Give scaled ingredient quantities for the EXACT guest count (${data.guests} peop
     const json = await res.json();
     const args = json?.choices?.[0]?.message?.tool_calls?.[0]?.function?.arguments;
     if (!args) throw new Error("No tool result");
-    const parsed = JSON.parse(args) as Omit<PartyPlan, "guests">;
-    return { guests: data.guests, ...parsed };
+    const parsed = JSON.parse(args) as Partial<Omit<PartyPlan, "guests">>;
+    return {
+      guests: data.guests,
+      occasion: parsed.occasion ?? `${data.mealType} for ${data.guests}`,
+      summary: parsed.summary ?? "",
+      shoppingNotes: parsed.shoppingNotes ?? "",
+      timeline: Array.isArray(parsed.timeline) ? parsed.timeline : [],
+      menu: Array.isArray(parsed.menu)
+        ? parsed.menu.map((d: any) => ({
+            name: String(d?.name ?? "Dish"),
+            category: (d?.category ?? "main") as DishPlan["category"],
+            servingNote: String(d?.servingNote ?? ""),
+            quickTip: d?.quickTip,
+            ingredients: Array.isArray(d?.ingredients)
+              ? d.ingredients.map((i: any) => ({ item: String(i?.item ?? ""), qty: String(i?.qty ?? "") }))
+              : [],
+          }))
+        : [],
+    };
   });
