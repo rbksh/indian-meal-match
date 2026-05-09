@@ -191,7 +191,7 @@ export function PartyPlanner() {
                   <div className="flex flex-wrap items-start justify-between gap-3">
                     <div>
                       <div className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
-                        {categoryEmoji[dish.category]} {categoryLabels[dish.category]}
+                        {categoryEmoji[dish.category] ?? "🍽️"} {categoryLabels[dish.category] ?? "Dish"}
                       </div>
                       <h4 className="mt-1 text-lg font-semibold">{dish.name}</h4>
                       <p className="text-sm text-muted-foreground">{dish.servingNote}</p>
