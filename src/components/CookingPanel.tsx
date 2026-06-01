@@ -177,42 +177,29 @@ export function CookingPanel() {
 
           {mode === "video" && (
             <div className="rounded-3xl bg-card p-4 ring-1 ring-border shadow-[var(--shadow-card)]">
-              {guide.videos[videoIdx] && (
-                <>
-                  <div className="aspect-video w-full overflow-hidden rounded-2xl bg-black">
-                    <iframe
-                      key={guide.videos[videoIdx].videoId}
-                      src={`https://www.youtube.com/embed/${guide.videos[videoIdx].videoId}`}
-                      title={guide.videos[videoIdx].title}
-                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                      allowFullScreen
-                      className="h-full w-full"
-                    />
-                  </div>
-                  <div className="mt-4 px-2">
-                    <h3 className="text-lg font-semibold">{guide.videos[videoIdx].title}</h3>
-                    <p className="text-sm text-muted-foreground">by {guide.videos[videoIdx].channel}</p>
-                  </div>
-                </>
-              )}
-              {guide.videos.length > 1 && (
-                <div className="mt-4 flex flex-wrap gap-2 px-2">
-                  {guide.videos.map((v, i) => (
-                    <button
-                      key={v.videoId}
-                      onClick={() => setVideoIdx(i)}
-                      className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-medium transition-colors ${
-                        i === videoIdx
-                          ? "bg-primary text-primary-foreground"
-                          : "bg-secondary text-secondary-foreground hover:bg-accent"
-                      }`}
-                    >
-                      <Youtube className="h-3 w-3" />
-                      {v.channel}
-                    </button>
-                  ))}
-                </div>
-              )}
+              <p className="px-2 pb-3 text-sm text-muted-foreground">
+                Hand-picked video recommendations from top Indian food channels. Tap one to watch it on YouTube.
+              </p>
+              <div className="grid gap-3 sm:grid-cols-2">
+                {guide.videos.map((v, i) => (
+                  <a
+                    key={`${v.channel}-${i}`}
+                    href={`https://www.youtube.com/results?search_query=${encodeURIComponent(v.query)}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group flex items-center gap-3 rounded-2xl border border-border bg-secondary/40 p-4 transition-colors hover:bg-accent"
+                  >
+                    <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-[#FF0000] text-white">
+                      <Youtube className="h-6 w-6" />
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <h3 className="truncate text-sm font-semibold group-hover:text-primary">{v.title}</h3>
+                      <p className="truncate text-xs text-muted-foreground">by {v.channel}</p>
+                    </div>
+                    <ArrowRight className="h-4 w-4 shrink-0 text-muted-foreground transition-transform group-hover:translate-x-0.5 group-hover:text-primary" />
+                  </a>
+                ))}
+              </div>
             </div>
           )}
 
