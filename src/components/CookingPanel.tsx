@@ -115,7 +115,7 @@ export function CookingPanel() {
           Want to cook <span className="gradient-text">something specific?</span>
         </h2>
         <p className="mt-2 text-muted-foreground">
-          Type a dish and get videos from top Indian YouTubers + a beginner-friendly step tracker.
+          Type a dish and get videos from top Indian Chefs and a beginner-friendly step tracker.
         </p>
       </div>
 
