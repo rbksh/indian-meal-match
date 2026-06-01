@@ -272,7 +272,7 @@ function Index() {
               </button>
             </div>
           </div>
-          <p className="mt-3 text-center text-xs text-muted-foreground">Type, snap, or pick from suggestions — AI will help fill in the rest.</p>
+          <p className="mt-3 text-center text-xs text-muted-foreground">Type, snap, or pick from suggestions. We will help fill in the rest.</p>
         </section>
 
         {(favRecipes.length > 0 || history.length > 0) && (
