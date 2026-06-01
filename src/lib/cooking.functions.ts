@@ -9,7 +9,7 @@ export type CookingGuide = {
   meal: string;
   funFact: string;
   steps: CookingStep[];
-  videos: { title: string; channel: string; videoId: string }[];
+  videos: { title: string; channel: string; query: string }[];
 };
 
 export type CookingStep = { title: string; detail: string; timerSeconds?: number };
@@ -32,7 +32,7 @@ export const getCookingGuide = createServerFn({ method: "POST" })
           {
             role: "system",
             content:
-              "You help home cooks make Indian dishes (including lesser-known regional/state recipes). Always respond using the provided tool. Use very simple, friendly language a beginner can follow. Give 6 to 10 short cooking steps. For any step that requires waiting/cooking/frying/boiling/simmering/resting for a specific amount of time, set timerSeconds to that duration in seconds (use the lower bound if a range). Omit timerSeconds for steps that don't need a timer. Also include a 1-2 sentence funFact about the dish — its origin, the state/region it comes from, history, or a culturally interesting tidbit. Suggest 3 real, popular YouTube cooking videos from well-known Indian food YouTubers (e.g. Hebbar's Kitchen, Ranveer Brar, Sanjeev Kapoor Khazana, Kabita's Kitchen, Nisha Madhulika, Cook with Parul, Your Food Lab, Tasted Recipes). Provide accurate 11-character YouTube video IDs you are confident exist for that exact dish.",
+              "You help home cooks make Indian dishes (including lesser-known regional/state recipes). Always respond using the provided tool. Use very simple, friendly language a beginner can follow. Give 6 to 10 short cooking steps. For any step that requires waiting/cooking/frying/boiling/simmering/resting for a specific amount of time, set timerSeconds to that duration in seconds (use the lower bound if a range). Omit timerSeconds for steps that don't need a timer. Also include a 1-2 sentence funFact about the dish — its origin, the state/region it comes from, history, or a culturally interesting tidbit. Suggest 3 YouTube video recommendations from well-known Indian food YouTubers (e.g. Hebbar's Kitchen, Ranveer Brar, Sanjeev Kapoor Khazana, Kabita's Kitchen, Nisha Madhulika, Cook with Parul, Your Food Lab, Tasted Recipes). For each, give the channel name, a descriptive title, and a 'query' string of the best YouTube search terms to find that exact recipe video (e.g. 'masala dosa recipe Hebbar's Kitchen'). Do NOT invent video IDs.",
           },
           { role: "user", content: `Dish to cook: ${data.meal}` },
         ],
@@ -76,9 +76,9 @@ export const getCookingGuide = createServerFn({ method: "POST" })
                       properties: {
                         title: { type: "string" },
                         channel: { type: "string" },
-                        videoId: { type: "string", description: "11-character YouTube video ID" },
+                        query: { type: "string", description: "YouTube search terms that find this exact recipe video" },
                       },
-                      required: ["title", "channel", "videoId"],
+                      required: ["title", "channel", "query"],
                       additionalProperties: false,
                     },
                   },
