@@ -80,7 +80,6 @@ export function CookingPanel() {
   const [error, setError] = useState<string | null>(null);
   const [guide, setGuide] = useState<CookingGuide | null>(null);
   const [mode, setMode] = useState<Mode>("tracker");
-  const [videoIdx, setVideoIdx] = useState(0);
   const [stepIdx, setStepIdx] = useState(0);
   const [done, setDone] = useState<Set<number>>(new Set());
   const fetchGuide = useServerFn(getCookingGuide);
@@ -88,7 +87,7 @@ export function CookingPanel() {
   const submit = async () => {
     if (!meal.trim()) return;
     setLoading(true); setError(null); setGuide(null);
-    setStepIdx(0); setVideoIdx(0); setDone(new Set());
+    setStepIdx(0); setDone(new Set());
     try {
       const g = await fetchGuide({ data: { meal: meal.trim() } });
       setGuide(g);
